@@ -1,0 +1,11 @@
+// Create a module
+
+nest g module moduleName
+
+// Create controllers
+
+nest g controller users
+
+// Create Service 
+
+nest g service users
