@@ -18,7 +18,7 @@ export class UsersService {
 
 
     findAll(role?: ''){
-        if(role){
+        if(role){  
             return this.users.filter(user => user.role == role)
         }
         return this.users
@@ -31,7 +31,7 @@ export class UsersService {
     }
 
     create(user:{name:string, role:'INTERN' | 'ADMIN'}){
-        const highestId = [...this.users].sort((a, b) => b.id = a.id)
+        const highestId = [...this.users].sort((a, b) => b.id - a.id)
         const newUser = {
             id:highestId[0].id + 1,
             ...user
