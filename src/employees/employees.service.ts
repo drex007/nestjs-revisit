@@ -1,15 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { DatabaseService } from 'src/database/database.service';
+import { Prisma } from 'generated/prisma/client';
 
 @Injectable()
 export class EmployeesService {
-  create(createEmployeeDto: CreateEmployeeDto) {
-    return 'This action adds a new employee';
+  constructor(private readonly dbService: DatabaseService) {}
+  async create(createEmployeeDto: Prisma.EmployeeCreateInput) {
+    return this.dbService.employee.create({
+      data: createEmployeeDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all employees`;
+  findAll(role?: 'INTERN' | 'ENGINEER') {
+    if (role) {
+      return this.dbService.employee.findMany({
+        where: {
+          role,
+        },
+      });
+    } else {
+      return this.dbService.employee.findMany();
+    }
   }
 
   findOne(id: number) {
