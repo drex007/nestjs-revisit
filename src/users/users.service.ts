@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -30,7 +31,7 @@ export class UsersService {
         return user
     }
 
-    create(user:{name:string, role:'INTERN' | 'ADMIN'}){
+    create(user:CreateUserDto){
         const highestId = [...this.users].sort((a, b) => b.id - a.id)
         const newUser = {
             id:highestId[0].id + 1,
