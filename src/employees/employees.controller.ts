@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { Prisma } from 'generated/prisma/client';
+import { Prisma, Role } from 'generated/prisma/client';
 
 @Controller('employees')
 export class EmployeesController {
@@ -14,8 +14,8 @@ export class EmployeesController {
   }
 
   @Get()
-  findAll(@Query('role') role?: 'INTERN' | 'ADMIN' | 'ENGINEER ') {
-    return this.employeesService.findAll();
+  findAll(@Query('role') role?: Role) {
+    return this.employeesService.findAll(role);
   }
 
   @Get(':id')
