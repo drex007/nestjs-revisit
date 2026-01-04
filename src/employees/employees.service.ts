@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { DatabaseService } from 'src/database/database.service';
-import { Prisma, Role } from 'generated/prisma/client';
+import { Prisma, Role } from '@prisma/client';
+
 
 @Injectable()
 export class EmployeesService {
@@ -13,7 +14,7 @@ export class EmployeesService {
     });
   }
 
-  findAll(role?: Role) {
+async findAll(role?: Role) {
     if (role) {
       return this.dbService.employee.findMany({
         where: {
@@ -25,15 +26,20 @@ export class EmployeesService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} employee`;
+  async findOne(id: number) {
+    return this.dbService.employee.findUnique({
+      where: { id },
+    });
   }
 
-  update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
-    return `This action updates a #${id} employee`;
+  async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
+    return this.dbService.employee.update({
+      where: { id },
+      data: updateEmployeeDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} employee`;
+    return this.dbService.employee.delete({ where: { id } });
   }
 }
