@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { DatabaseService } from 'src/database/database.service';
@@ -27,9 +27,14 @@ async findAll(role?: Role) {
   }
 
   async findOne(id: number) {
-    return this.dbService.employee.findUnique({
+    const user = await this.dbService.employee.findUnique({
       where: { id },
     });
+    if (user) {
+      return user;
+    } else {
+      throw new NotFoundException('Employee Not Found');
+    }
   }
 
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
